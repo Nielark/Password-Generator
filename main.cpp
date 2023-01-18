@@ -3,6 +3,8 @@
 #include <cstdlib>
 #include <ctime>
 
+void menu();
+
 using namespace std;
 
 int main()
@@ -46,4 +48,12 @@ int main()
     system("CLS");
     password = ""; // Initialize back to NULL.
     goto top;
+}
+
+void menu(){
+    cout << "[1] - Include Numbers\n";
+    cout << "[2] - Include Special Characters\n";
+    cout << "[3] - Include Lowercase Letters\n";
+    cout << "[4] - Include Uppercase Letters\n";
+    cout << "[0] - Exit\n\n";
 }
