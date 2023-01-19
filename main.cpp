@@ -66,32 +66,39 @@ int main()
                     includUpperCase = false;
                 }
                 break;
+
             case 'x':
                 goto next;
         }
     }
 
     next:
-    if(includNum == true){
+    if(includNum == true && includSpecChar == false && includLowerCase == false && includUpperCase == false){
         totalChar = numberSize;
         characters = numbers;
         generatePassword();
     }
-    else if(includSpecChar == true){
+    else if(includNum == false && includSpecChar == true && includLowerCase == false && includUpperCase == false){
         totalChar = specKeySize;
         characters = specialKeys;
         generatePassword();
     }
-    else if(includLowerCase == true){
+    else if(includNum == false && includSpecChar == false && includLowerCase == true && includUpperCase == false){
         totalChar = letterLowerSize;
         characters = letterLower;
         generatePassword();
     }
-    else if(includUpperCase == true){
+    else if(includNum == false && includSpecChar == false && includLowerCase == false && includUpperCase == true){
         totalChar = letterUpperSize;
         characters = letterUpper;
         generatePassword();
     }
+    else if(includNum == true && includSpecChar == true && includLowerCase == false && includUpperCase == false){
+        totalChar = numberSize + specKeySize;
+        characters = numbers + specialKeys;
+        generatePassword();
+    }
+
 }
 
 void menu(bool includNum, bool includSpecChar, bool includLowerCase, bool includUpperCase){
