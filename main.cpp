@@ -8,22 +8,22 @@ void generatePassword();
 
 using namespace std;
 
+int totalChar;
+string characters;
+
 int main()
 {
-    srand(time(0)); // Random seed.
     const string specialKeys = ";,:.+-*/%><=!~^&|[]{}()";     // 23 Special Characters
     const string numbers = "0123456789";                      // 10 Numbers
     const string letterLower = "abcdefghijklmnopqrstuvwxyz";  // 26 Lowercase Letters
     const string letterUpper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";  // 26 Uppercase Letters
     const int specKeySize = 23, numberSize = 10, letterLowerSize = 26, letterUpperSize =26;
-    int totalChar, passwordLen;
     //totalChar = specKeySize + numberSize + letterLowerSize + letterUpperSize;
     //string characters = specialKeys + numbers + letterLower + letterUpper; // Concatenating the strings.
     bool includNum = false, includSpecChar = false, includLowerCase = false, includUpperCase = false;
-    string characters, password;
+
     char passwordComb[4];
 
-    top:
     menu(includNum, includSpecChar, includLowerCase, includUpperCase);
 
     cout << "Select your choice for the combination of the password: ";
@@ -37,55 +37,31 @@ int main()
             characters = numbers;
             includNum = true;
             menu(includNum, includSpecChar, includLowerCase, includUpperCase);
+            generatePassword();
         }
         else if(passwordComb[i] == '2'){
             totalChar = specKeySize;
             characters = specialKeys;
             includSpecChar = true;
             menu(includNum, includSpecChar, includLowerCase, includUpperCase);
+
+            generatePassword();
         }
         else if(passwordComb[i] == '3'){
             totalChar = letterLowerSize;
             characters = letterLower;
             includLowerCase = true;
             menu(includNum, includSpecChar, includLowerCase, includUpperCase);
+            generatePassword();
         }
         else if(passwordComb[i] == '4'){
             totalChar = letterUpperSize;
             characters = letterUpper;
             includUpperCase = true;
             menu(includNum, includSpecChar, includLowerCase, includUpperCase);
+            generatePassword();
         }
     }
-
-
-
-
-    cout << "Enter the length for the password: ";
-            cin >> passwordLen;
-            cout << endl;
-
-            if(passwordLen >= 8 && passwordLen != 0){
-                for(int i = 0; i < passwordLen; i++){
-                    int randNum = 0 + (rand() % totalChar); // Random number generator from 0 up to the totalChar.
-                    password += characters[randNum];
-                }
-
-                cout << "Generated Password: " << password << endl;
-            }
-            else if(passwordLen == 0){
-                return 0; // terminate the program.
-            }
-            else{
-                cout << "Password length must be eight(8) characters or greater.\n";
-            }
-
-            cout << endl;
-
-            system("PAUSE");
-            system("CLS");
-            password = ""; // Initialize back to NULL.
-            goto top;
 }
 
 void menu(bool includNum, bool includSpecChar, bool includLowerCase, bool includUpperCase){
@@ -122,4 +98,26 @@ void menu(bool includNum, bool includSpecChar, bool includLowerCase, bool includ
 }
 
 void generatePassword(){
+    srand(time(0)); // Random seed.
+    int passwordLen;
+    string password;
+
+    cout << "Enter the length for the password: ";
+    cin >> passwordLen;
+    cout << endl;
+
+    if(passwordLen >= 8 && passwordLen != 0){
+        for(int i = 0; i < passwordLen; i++){
+            int randNum = 0 + (rand() % totalChar); // Random number generator from 0 up to the totalChar.
+            password += characters[randNum];
+        }
+
+        cout << "Generated Password: " << password << endl;
+    }
+    else if(passwordLen == 0){
+        return; // terminate the program.
+    }
+    else{
+        cout << "Password length must be eight(8) characters or greater.\n";
+    }
 }
