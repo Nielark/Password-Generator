@@ -21,46 +21,76 @@ int main()
     //totalChar = specKeySize + numberSize + letterLowerSize + letterUpperSize;
     //string characters = specialKeys + numbers + letterLower + letterUpper; // Concatenating the strings.
     bool includNum = false, includSpecChar = false, includLowerCase = false, includUpperCase = false;
-
+    char choice, choiceNum, choiceSpecK, choiceLetterLow, choiceLetterUp;
     char passwordComb[4];
 
-    menu(includNum, includSpecChar, includLowerCase, includUpperCase);
+    while(choice != '0'){
+        menu(includNum, includSpecChar, includLowerCase, includUpperCase);
 
-    cout << "Select your choice for the combination of the password: ";
-    for(int i = 0; i < 4; i++){
-        cin >> passwordComb[i];
+        cout << "Select your choice for the combination of the password: ";
+        cin >> choice;
+
+        switch(choice){
+            case '1':
+                if(includNum == false){
+                    includNum = true;
+                }
+                else{
+                    includNum = false;
+                }
+                break;
+
+            case '2':
+                if(includSpecChar == false){
+                    includSpecChar = true;
+                }
+                else{
+                    includSpecChar = false;
+                }
+                break;
+
+            case '3':
+                if(includLowerCase == false){
+                    includLowerCase = true;
+                }
+                else{
+                    includLowerCase = false;
+                }
+                break;
+
+            case '4':
+                if(includUpperCase == false){
+                    includUpperCase = true;
+                }
+                else{
+                    includUpperCase = false;
+                }
+                break;
+            case 'x':
+                goto next;
+        }
     }
 
-    for(int i = 0; i < 4; i++){
-        if(passwordComb[i] == '1'){
-            totalChar = numberSize;
-            characters = numbers;
-            includNum = true;
-            menu(includNum, includSpecChar, includLowerCase, includUpperCase);
-            generatePassword();
-        }
-        else if(passwordComb[i] == '2'){
-            totalChar = specKeySize;
-            characters = specialKeys;
-            includSpecChar = true;
-            menu(includNum, includSpecChar, includLowerCase, includUpperCase);
-
-            generatePassword();
-        }
-        else if(passwordComb[i] == '3'){
-            totalChar = letterLowerSize;
-            characters = letterLower;
-            includLowerCase = true;
-            menu(includNum, includSpecChar, includLowerCase, includUpperCase);
-            generatePassword();
-        }
-        else if(passwordComb[i] == '4'){
-            totalChar = letterUpperSize;
-            characters = letterUpper;
-            includUpperCase = true;
-            menu(includNum, includSpecChar, includLowerCase, includUpperCase);
-            generatePassword();
-        }
+    next:
+    if(includNum == true){
+        totalChar = numberSize;
+        characters = numbers;
+        generatePassword();
+    }
+    else if(includSpecChar == true){
+        totalChar = specKeySize;
+        characters = specialKeys;
+        generatePassword();
+    }
+    else if(includLowerCase == true){
+        totalChar = letterLowerSize;
+        characters = letterLower;
+        generatePassword();
+    }
+    else if(includUpperCase == true){
+        totalChar = letterUpperSize;
+        characters = letterUpper;
+        generatePassword();
     }
 }
 
@@ -93,7 +123,7 @@ void menu(bool includNum, bool includSpecChar, bool includLowerCase, bool includ
     else if(includUpperCase == true){
         cout << "[4] - Exclude Uppercase Letters\n";
     }
-    cout << "[0] - Exit\n\n";
+    cout << "[x] - Exit\n\n";
     cout << ">> Note: To exit the program just input 0. <<\n\n";
 }
 
