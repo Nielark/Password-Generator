@@ -3,7 +3,8 @@
 #include <cstdlib>
 #include <ctime>
 
-void menu();
+void menu(bool includNum, bool includSpecChar, bool includLowerCase, bool includUpperCase);
+void generatePassword();
 
 using namespace std;
 
@@ -16,44 +17,109 @@ int main()
     const string letterUpper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";  // 26 Uppercase Letters
     const int specKeySize = 23, numberSize = 10, letterLowerSize = 26, letterUpperSize =26;
     int totalChar, passwordLen;
-    totalChar = specKeySize + numberSize + letterLowerSize + letterUpperSize;
-    string characters = specialKeys + numbers + letterLower + letterUpper; // Concatenating the strings.
-    string password;
+    //totalChar = specKeySize + numberSize + letterLowerSize + letterUpperSize;
+    //string characters = specialKeys + numbers + letterLower + letterUpper; // Concatenating the strings.
+    bool includNum = false, includSpecChar = false, includLowerCase = false, includUpperCase = false;
+    string characters, password;
+    char passwordComb[4];
 
     top:
-    cout << "P A S S W O R D  G E N E R A T O R\n\n";
-    cout << ">> Note: To exit the program just input 0. <<\n\n";
-    cout << "Enter the length for the password: ";
-    cin >> passwordLen;
-    cout << endl;
+    menu(includNum, includSpecChar, includLowerCase, includUpperCase);
 
-    if(passwordLen >= 8 && passwordLen != 0){
-        for(int i = 0; i < passwordLen; i++){
-            int randNum = 0 + (rand() % totalChar - 1); // Random number generator from 0 up to the totalChar.
-            password += characters[randNum];
+    cout << "Select your choice for the combination of the password: ";
+    for(int i = 0; i < 4; i++){
+        cin >> passwordComb[i];
+    }
+
+    for(int i = 0; i < 4; i++){
+        if(passwordComb[i] == '1'){
+            totalChar = numberSize;
+            characters = numbers;
+            includNum = true;
+            menu(includNum, includSpecChar, includLowerCase, includUpperCase);
         }
-
-        cout << "Generated Password: " << password << endl;
+        else if(passwordComb[i] == '2'){
+            totalChar = specKeySize;
+            characters = specialKeys;
+            includSpecChar = true;
+            menu(includNum, includSpecChar, includLowerCase, includUpperCase);
+        }
+        else if(passwordComb[i] == '3'){
+            totalChar = letterLowerSize;
+            characters = letterLower;
+            includLowerCase = true;
+            menu(includNum, includSpecChar, includLowerCase, includUpperCase);
+        }
+        else if(passwordComb[i] == '4'){
+            totalChar = letterUpperSize;
+            characters = letterUpper;
+            includUpperCase = true;
+            menu(includNum, includSpecChar, includLowerCase, includUpperCase);
+        }
     }
-    else if(passwordLen == 0){
-        return 0; // terminate the program.
-    }
-    else{
-        cout << "Password length must be eight(8) characters or greater.\n";
-    }
 
-    cout << endl;
 
-    system("PAUSE");
-    system("CLS");
-    password = ""; // Initialize back to NULL.
-    goto top;
+
+
+    cout << "Enter the length for the password: ";
+            cin >> passwordLen;
+            cout << endl;
+
+            if(passwordLen >= 8 && passwordLen != 0){
+                for(int i = 0; i < passwordLen; i++){
+                    int randNum = 0 + (rand() % totalChar); // Random number generator from 0 up to the totalChar.
+                    password += characters[randNum];
+                }
+
+                cout << "Generated Password: " << password << endl;
+            }
+            else if(passwordLen == 0){
+                return 0; // terminate the program.
+            }
+            else{
+                cout << "Password length must be eight(8) characters or greater.\n";
+            }
+
+            cout << endl;
+
+            system("PAUSE");
+            system("CLS");
+            password = ""; // Initialize back to NULL.
+            goto top;
 }
 
-void menu(){
-    cout << "[1] - Include Numbers\n";
-    cout << "[2] - Include Special Characters\n";
-    cout << "[3] - Include Lowercase Letters\n";
-    cout << "[4] - Include Uppercase Letters\n";
+void menu(bool includNum, bool includSpecChar, bool includLowerCase, bool includUpperCase){
+    cout << "P A S S W O R D  G E N E R A T O R\n\n";
+    if(includNum == false){
+       cout << "[1] - Include Numbers\n";
+    }
+    else if(includNum == true){
+        cout << "[1] - Exclude Numbers\n";
+    }
+
+    if(includSpecChar == false){
+        cout << "[2] - Include Special Characters\n";
+    }
+    else if(includSpecChar == true){
+        cout << "[2] - Exclude Special Characters\n";
+    }
+
+    if(includLowerCase == false){
+        cout << "[3] - Include Lowercase Letters\n";
+    }
+    else if(includLowerCase == true){
+        cout << "[3] - Exclude Lowercase Letters\n";
+    }
+
+    if(includUpperCase == false){
+        cout << "[4] - Include Uppercase Letters\n";
+    }
+    else if(includUpperCase == true){
+        cout << "[4] - Exclude Uppercase Letters\n";
+    }
     cout << "[0] - Exit\n\n";
+    cout << ">> Note: To exit the program just input 0. <<\n\n";
+}
+
+void generatePassword(){
 }
