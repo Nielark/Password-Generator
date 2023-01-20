@@ -110,6 +110,13 @@ int main()
         characters = numbers + letterLower;
         generatePassword();
     }
+
+    else if(includNum == true && includSpecChar == false && includLowerCase == false && includUpperCase == true){
+        totalChar = numberSize + letterUpperSize;
+        characters = numbers + letterUpper;
+        generatePassword();
+    }
+
     else if(includNum == false && includSpecChar == true && includLowerCase == true && includUpperCase == false){
         totalChar = specKeySize + letterLowerSize;
         characters = specialKeys + letterLower;
