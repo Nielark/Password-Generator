@@ -98,7 +98,46 @@ int main()
         characters = numbers + specialKeys;
         generatePassword();
     }
-
+    else if(includNum == true && includSpecChar == false && includLowerCase == true && includUpperCase == false){
+        totalChar = numberSize + letterLowerSize;
+        characters = numbers + letterLower;
+        generatePassword();
+    }
+    else if(includNum == false && includSpecChar == true && includLowerCase == true && includUpperCase == false){
+        totalChar = specKeySize + letterLowerSize;
+        characters = specialKeys + letterLower;
+        generatePassword();
+    }
+    else if(includNum == false && includSpecChar == false && includLowerCase == true && includUpperCase == true){
+        totalChar = letterLowerSize + letterUpperSize;
+        characters = letterLower + letterUpper;
+        generatePassword();
+    }
+    else if(includNum == true && includSpecChar == true && includLowerCase == true && includUpperCase == false){
+        totalChar = numberSize + specKeySize + letterLowerSize;
+        characters = numbers + specialKeys + letterLower;
+        generatePassword();
+    }
+    else if(includNum == true && includSpecChar == true && includLowerCase == false && includUpperCase == true){
+        totalChar = numberSize + specKeySize + letterUpperSize;
+        characters = numbers + specialKeys + letterUpper;
+        generatePassword();
+    }
+    else if(includNum == true && includSpecChar == false && includLowerCase == true && includUpperCase == true){
+        totalChar = numberSize + letterLowerSize + letterUpperSize;
+        characters = numbers + letterLower + letterUpper;
+        generatePassword();
+    }
+    else if(includNum == false && includSpecChar == true && includLowerCase == true && includUpperCase == true){
+        totalChar = specKeySize + letterLowerSize + letterUpperSize;
+        characters = specialKeys + letterLower + letterUpper;
+        generatePassword();
+    }
+    else if(includNum == true && includSpecChar == true && includLowerCase == true && includUpperCase == true){
+        totalChar = numberSize + specKeySize + letterLowerSize + letterUpperSize;
+        characters = numbers + specialKeys + letterLower + letterUpper;
+        generatePassword();
+    }
 }
 
 void menu(bool includNum, bool includSpecChar, bool includLowerCase, bool includUpperCase){
@@ -139,11 +178,12 @@ void generatePassword(){
     int passwordLen;
     string password;
 
+    enterPasswordLen:
     cout << "Enter the length for the password: ";
     cin >> passwordLen;
     cout << endl;
 
-    if(passwordLen >= 8 && passwordLen != 0){
+    if(passwordLen >= 8){
         for(int i = 0; i < passwordLen; i++){
             int randNum = 0 + (rand() % totalChar); // Random number generator from 0 up to the totalChar.
             password += characters[randNum];
@@ -151,10 +191,8 @@ void generatePassword(){
 
         cout << "Generated Password: " << password << endl;
     }
-    else if(passwordLen == 0){
-        return; // terminate the program.
-    }
     else{
         cout << "Password length must be eight(8) characters or greater.\n";
+        goto enterPasswordLen;
     }
 }
