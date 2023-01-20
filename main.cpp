@@ -4,12 +4,12 @@
 #include <ctime>
 
 void menu(bool includNum, bool includSpecChar, bool includLowerCase, bool includUpperCase);
-void generatePassword();
+void generatePassword(bool regenPassword);
 void clean();
 
 using namespace std;
 
-int totalChar;
+int totalChar, passwordLen;
 string characters;
 
 int main()
@@ -20,13 +20,14 @@ int main()
     const string letterUpper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";  // 26 Uppercase Letters
     const int specKeySize = 23, numberSize = 10, letterLowerSize = 26, letterUpperSize =26;
     bool includNum = false, includSpecChar = false, includLowerCase = false, includUpperCase = false;
-    char choice;
-
+    bool regenPassword = false;
+    char choice, genAgain;
 
     enterChoice:
-    while(choice != '0'){
+    while(true){
         menu(includNum, includSpecChar, includLowerCase, includUpperCase); // Display the choices.
 
+        // Selection of password combination starts.
         cout << "Enter your choice for the combination of the password: ";
         cin >> choice;
 
@@ -71,6 +72,10 @@ int main()
                 goto next;
                 break;
 
+            case '0':
+                return 0;
+                break;
+
             default:
                 cout << "Invalid Input\n";
                 clean();
@@ -80,77 +85,101 @@ int main()
     }
 
     next:
+    // Conditions for the selected password combination.
     if(includNum == true && includSpecChar == false && includLowerCase == false && includUpperCase == false){
         totalChar = numberSize;
         characters = numbers;
-        generatePassword();
+        generatePassword(regenPassword);
     }
     else if(includNum == false && includSpecChar == true && includLowerCase == false && includUpperCase == false){
         totalChar = specKeySize;
         characters = specialKeys;
-        generatePassword();
+        generatePassword(regenPassword);
     }
     else if(includNum == false && includSpecChar == false && includLowerCase == true && includUpperCase == false){
         totalChar = letterLowerSize;
         characters = letterLower;
-        generatePassword();
+        generatePassword(regenPassword);
     }
     else if(includNum == false && includSpecChar == false && includLowerCase == false && includUpperCase == true){
         totalChar = letterUpperSize;
         characters = letterUpper;
-        generatePassword();
+        generatePassword(regenPassword);
     }
     else if(includNum == true && includSpecChar == true && includLowerCase == false && includUpperCase == false){
-        totalChar = numberSize + specKeySize;
-        characters = numbers + specialKeys;
-        generatePassword();
+        totalChar = numberSize + specKeySize;  // Adding the sized of selected characters.
+        characters = numbers + specialKeys;    // Concatenating the selected char for password combination.
+        generatePassword(regenPassword);
     }
     else if(includNum == true && includSpecChar == false && includLowerCase == true && includUpperCase == false){
         totalChar = numberSize + letterLowerSize;
         characters = numbers + letterLower;
-        generatePassword();
+        generatePassword(regenPassword);
     }
-
     else if(includNum == true && includSpecChar == false && includLowerCase == false && includUpperCase == true){
         totalChar = numberSize + letterUpperSize;
         characters = numbers + letterUpper;
-        generatePassword();
+        generatePassword(regenPassword);
     }
-
     else if(includNum == false && includSpecChar == true && includLowerCase == true && includUpperCase == false){
         totalChar = specKeySize + letterLowerSize;
         characters = specialKeys + letterLower;
-        generatePassword();
+        generatePassword(regenPassword);
     }
     else if(includNum == false && includSpecChar == false && includLowerCase == true && includUpperCase == true){
         totalChar = letterLowerSize + letterUpperSize;
         characters = letterLower + letterUpper;
-        generatePassword();
+        generatePassword(regenPassword);
     }
     else if(includNum == true && includSpecChar == true && includLowerCase == true && includUpperCase == false){
         totalChar = numberSize + specKeySize + letterLowerSize;
         characters = numbers + specialKeys + letterLower;
-        generatePassword();
+        generatePassword(regenPassword);
     }
     else if(includNum == true && includSpecChar == true && includLowerCase == false && includUpperCase == true){
         totalChar = numberSize + specKeySize + letterUpperSize;
         characters = numbers + specialKeys + letterUpper;
-        generatePassword();
+        generatePassword(regenPassword);
     }
     else if(includNum == true && includSpecChar == false && includLowerCase == true && includUpperCase == true){
         totalChar = numberSize + letterLowerSize + letterUpperSize;
         characters = numbers + letterLower + letterUpper;
-        generatePassword();
+        generatePassword(regenPassword);
     }
     else if(includNum == false && includSpecChar == true && includLowerCase == true && includUpperCase == true){
         totalChar = specKeySize + letterLowerSize + letterUpperSize;
         characters = specialKeys + letterLower + letterUpper;
-        generatePassword();
+        generatePassword(regenPassword);
     }
     else if(includNum == true && includSpecChar == true && includLowerCase == true && includUpperCase == true){
         totalChar = numberSize + specKeySize + letterLowerSize + letterUpperSize;
         characters = numbers + specialKeys + letterLower + letterUpper;
-        generatePassword();
+        generatePassword(regenPassword);
+    }
+
+    generateAgain:
+    cout << "\nGenerate Again? [Y or N]?: ";
+    cin >> genAgain;
+
+    if(genAgain == 'Y' || genAgain == 'y'){          // To regenerate a new password combination.
+        regenPassword = true;
+        generatePassword(regenPassword);
+        goto generateAgain;
+    }
+    else if(genAgain == 'N' || genAgain == 'n'){    // Go back to the menu.
+        totalChar = 0;
+        includNum = false;
+        includSpecChar = false;
+        includLowerCase = false;
+        includUpperCase = false;
+        regenPassword = false;
+        system("CLS");
+        goto enterChoice;
+    }
+    else{
+        cout << "Invalid Input\n";
+        clean();
+        goto generateAgain;
     }
 }
 
@@ -185,31 +214,46 @@ void menu(bool includNum, bool includSpecChar, bool includLowerCase, bool includ
     }
     cout << "[5] - Next\n";
     cout << "[0] - EXIT\n\n";
+    cout << "=====================================\n\n";
 }
 
-void generatePassword(){
+void generatePassword(bool regenPassword){
     srand(time(0)); // Random seed.
-    int passwordLen;
     string password;
 
-    enterPasswordLen:
-    cout << "\nEnter the length for the password: ";
-    cin >> passwordLen;
-    cout << endl;
+    // Generate Password.
+    if(regenPassword == false){
+        enterPasswordLen:
+        cout << "\nEnter the length for the password: ";
+        cin >> passwordLen;
+        cout << endl;
 
-    if(passwordLen >= 8){
+        if(passwordLen >= 8){
+            for(int i = 0; i < passwordLen; i++){
+                int randNum = 0 + (rand() % totalChar); // Random number generator from 0 up to the totalChar.
+                password += characters[randNum];
+            }
+
+            cout << "Generated Password: " << password << endl;
+        }
+        else{
+            cout << "Password length must be eight(8) characters or greater.\n";
+            clean();
+            goto enterPasswordLen;
+        }
+    }
+    // Regenerate Password.
+    else{
         for(int i = 0; i < passwordLen; i++){
             int randNum = 0 + (rand() % totalChar); // Random number generator from 0 up to the totalChar.
             password += characters[randNum];
         }
 
-        cout << "Generated Password: " << password << endl;
+        cout << "Regenerated Password: " << password << endl;
+        regenPassword = false;
     }
-    else{
-        cout << "Password length must be eight(8) characters or greater.\n";
-        clean();
-        goto enterPasswordLen;
-    }
+
+    password = "";
 }
 
 void clean(){
