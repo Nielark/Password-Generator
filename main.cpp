@@ -5,6 +5,7 @@
 
 void menu(bool includNum, bool includSpecChar, bool includLowerCase, bool includUpperCase);
 void generatePassword();
+void clean();
 
 using namespace std;
 
@@ -18,16 +19,15 @@ int main()
     const string letterLower = "abcdefghijklmnopqrstuvwxyz";  // 26 Lowercase Letters
     const string letterUpper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";  // 26 Uppercase Letters
     const int specKeySize = 23, numberSize = 10, letterLowerSize = 26, letterUpperSize =26;
-    //totalChar = specKeySize + numberSize + letterLowerSize + letterUpperSize;
-    //string characters = specialKeys + numbers + letterLower + letterUpper; // Concatenating the strings.
     bool includNum = false, includSpecChar = false, includLowerCase = false, includUpperCase = false;
-    char choice, choiceNum, choiceSpecK, choiceLetterLow, choiceLetterUp;
-    char passwordComb[4];
+    char choice;
 
+
+    enterChoice:
     while(choice != '0'){
-        menu(includNum, includSpecChar, includLowerCase, includUpperCase);
+        menu(includNum, includSpecChar, includLowerCase, includUpperCase); // Display the choices.
 
-        cout << "Select your choice for the combination of the password: ";
+        cout << "Enter your choice for the combination of the password: ";
         cin >> choice;
 
         switch(choice){
@@ -67,9 +67,16 @@ int main()
                 }
                 break;
 
-            case 'x':
+            case '5':
                 goto next;
+                break;
+
+            default:
+                cout << "Invalid Input\n";
+                clean();
+                goto enterChoice;
         }
+        system("CLS");
     }
 
     next:
@@ -169,8 +176,8 @@ void menu(bool includNum, bool includSpecChar, bool includLowerCase, bool includ
     else if(includUpperCase == true){
         cout << "[4] - Exclude Uppercase Letters\n";
     }
-    cout << "[x] - Exit\n\n";
-    cout << ">> Note: To exit the program just input 0. <<\n\n";
+    cout << "[5] - Next\n";
+    cout << "[0] - EXIT\n\n";
 }
 
 void generatePassword(){
@@ -179,7 +186,7 @@ void generatePassword(){
     string password;
 
     enterPasswordLen:
-    cout << "Enter the length for the password: ";
+    cout << "\nEnter the length for the password: ";
     cin >> passwordLen;
     cout << endl;
 
@@ -193,6 +200,12 @@ void generatePassword(){
     }
     else{
         cout << "Password length must be eight(8) characters or greater.\n";
+        clean();
         goto enterPasswordLen;
     }
+}
+
+void clean(){
+    system("PAUSE");
+    system("CLS");
 }
